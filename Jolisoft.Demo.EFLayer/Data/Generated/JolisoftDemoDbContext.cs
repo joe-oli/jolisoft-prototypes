@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Jolisoft.Demo.WebAPI.Models.Generated;
+using Jolisoft.Demo.EFLayer.Models.Generated;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jolisoft.Demo.WebAPI.Data.Generated;
+namespace Jolisoft.Demo.EFLayer.Data.Generated;
 
 public partial class JolisoftDemoDbContext : DbContext
 {

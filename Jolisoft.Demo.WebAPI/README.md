@@ -11,5 +11,6 @@ It demonstrates:
 - Offline in-memory execution by default
 - Optional EF Core SQL Server/LocalDB persistence
 - A fake ACME platform boundary
+- A separate `Jolisoft.Demo.EFLayer` containing database-first generated EF classes
 
 See `../doco/201-full-system-slice.md` and `../doco/301-first-slice-run.md` for design and run instructions.

@@ -1,4 +1,4 @@
-using Jolisoft.Demo.WebAPI.Data;
+using Jolisoft.Demo.EFLayer.Data.Generated;
 using Jolisoft.Demo.WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 }
 else
 {
-	builder.Services.AddDbContext<WorkflowDbContext>(options => options.UseSqlServer(connectionString));
+	builder.Services.AddDbContext<JolisoftDemoDbContext>(options => options.UseSqlServer(connectionString));
 	builder.Services.AddScoped<IWorkflowStore, EfWorkflowStore>();
 }
 
@@ -31,7 +31,7 @@ app.MapControllers();
 if (!string.IsNullOrWhiteSpace(connectionString))
 {
 	using var scope = app.Services.CreateScope();
-	await scope.ServiceProvider.GetRequiredService<WorkflowDbContext>().Database.EnsureCreatedAsync();
+	scope.ServiceProvider.GetRequiredService<JolisoftDemoDbContext>();
 }
 
 app.Run();

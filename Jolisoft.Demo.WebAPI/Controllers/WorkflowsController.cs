@@ -1,3 +1,4 @@
+using Jolisoft.Demo.EFLayer.Models.Generated;
 using Jolisoft.Demo.WebAPI.Models;
 using Jolisoft.Demo.WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,11 @@ public sealed class WorkflowsController(IWorkflowStore store, IPlatformGateway p
             return BadRequest("Title and CreatedBy are required.");
         }
 
-        var record = new WorkflowRecord
+        var record = new WorkflowRecords
         {
             Id = Guid.NewGuid(),
             Title = request.Title.Trim(),
+            Status = "Draft",
             CreatedBy = request.CreatedBy.Trim(),
             CreatedAt = DateTimeOffset.UtcNow,
         };
@@ -36,6 +38,6 @@ public sealed class WorkflowsController(IWorkflowStore store, IPlatformGateway p
         return CreatedAtAction(nameof(List), new { id = record.Id }, ToResult(record, platformReference));
     }
 
-    private static WorkflowResult ToResult(WorkflowRecord record, string platformReference) =>
+    private static WorkflowResult ToResult(WorkflowRecords record, string platformReference) =>
         new(record.Id, record.Title, record.Status, record.CreatedBy, record.CreatedAt, platformReference);
 }
