@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.Build.Sql/2.3.0-preview.2">
+  <PropertyGroup>
+    <Name>JolisoftDemoDB</Name>
+    <SqlServerVersion>Sql160</SqlServerVersion>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+  </PropertyGroup>
+</Project>

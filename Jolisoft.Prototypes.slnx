@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Jolisoft.Demo.WebAPI/Jolisoft.Demo.WebAPI.csproj" />
+  <Project Path="Jolisoft.Demo.Database/Jolisoft.Demo.Database.sqlproj" />
+</Solution>

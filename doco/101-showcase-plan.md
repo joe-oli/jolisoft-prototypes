@@ -1,6 +1,6 @@
 # Jolisoft Showcase Plan
 
-Status: implementation started  
+Status: implementation started; first API slice complete; active backend targets .NET 10
 Last revised: 2026-09-06
 
 Proposed repository name: `jolisoft-prototypes`
@@ -20,6 +20,7 @@ The original `temp` folder is source material during this work. It must not be m
 - Bootstrap CSS, or `react-bootstrap` where useful, provides global styling.
 - CSS Modules provide local component overrides.
 - Related full systems use consistent namespaces such as `Jolisoft.Demo.WebAPI` and `Jolisoft.Demo.WebUI`.
+- Active new prototype projects target .NET 10 LTS. Historical projects under `temp` retain their original frameworks and are not changed.
 - Independent demonstrations have their own folders, initially including `DynamicQuestions` and `WPFTools`.
 - `doco` is repository-wide offline Markdown for decisions, historical explanations, and setup notes. It is not required to be rendered by the catalog.
 - `secrets` is repository-wide private reference material for credentials, connection details, local settings, and environment-specific values. It remains local to this personal archive.
@@ -92,9 +93,9 @@ Use numbered Markdown files so the archive remains easy to scan and extend:
 
 ## Implementation sequence
 
-1. Create the Vite React TypeScript catalog shell with Bootstrap and CSS Modules.
-2. Add catalog entries and navigation for the planned systems.
-3. Add one thin vertical full-system slice with a minimal schema, API, middleware, UI, and fake service boundary.
+1. Create the Vite React TypeScript catalog shell with Bootstrap and CSS Modules. **Complete.**
+2. Add catalog entries and navigation for the planned systems. **Complete.**
+3. Add one thin vertical full-system slice with a minimal schema, API, middleware, UI, and fake service boundary. **Complete for the in-memory local profile; SQL Server/LocalDB validation remains next.**
 4. Compare the dynamic-question implementations and document whether they remain separate or are merged.
 5. Add the remaining full-system and WPF/Dataverse examples incrementally, keeping each buildable.
 6. Keep configuration and private local references in `secrets`.

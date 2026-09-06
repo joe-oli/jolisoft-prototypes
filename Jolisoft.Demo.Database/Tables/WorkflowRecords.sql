@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[WorkflowRecords]
+(
+    [Id] UNIQUEIDENTIFIER NOT NULL,
+    [Title] NVARCHAR(160) NOT NULL,
+    [Status] NVARCHAR(40) NOT NULL,
+    [CreatedBy] NVARCHAR(160) NOT NULL,
+    [CreatedAt] DATETIMEOFFSET(7) NOT NULL,
+    CONSTRAINT [PK_WorkflowRecords] PRIMARY KEY CLUSTERED ([Id])
+);

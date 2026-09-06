@@ -1,4 +1,5 @@
 import './App.css'
+import WorkflowPanel from './WorkflowPanel'
 
 type ShowcaseItem = {
   number: string
@@ -92,6 +93,8 @@ function App() {
           ))}
         </div>
       </section>
+
+      <WorkflowPanel />
 
       <section className="principles-band" id="principles">
         <div className="container principles-grid">
