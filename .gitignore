@@ -1,0 +1,54 @@
+# Historical source archive - kept on disk, excluded from this repository
+/temp/
+
+# Node.js / React / Vite
+**/node_modules/
+**/.pnpm-store/
+**/.npm/
+**/.yarn/
+**/.yarn-cache/
+**/dist/
+**/build/
+**/.vite/
+**/.cache/
+**/coverage/
+**/playwright-report/
+**/test-results/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript and frontend tooling
+**/*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# .NET / Visual Studio
+**/bin/
+**/obj/
+.vs/
+**/.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.nupkg
+**/packages/
+TestResults/
+**/TestResults/
+
+# ASP.NET local development artifacts
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+**/Properties/launchSettings.local.json
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/*.log
+
+# Keep repository-wide documentation and private archive references trackable.
+# /doco/ and /secrets/ are intentionally not ignored.
