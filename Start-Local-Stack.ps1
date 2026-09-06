@@ -8,6 +8,7 @@ built API DLL and avoids a second concurrent build at launch.
 #>
 param(
     [switch]$StopOnly,
+    [switch]$UseInMemory,
     [ValidateSet('Debug', 'Release')]
     [string]$Configuration = 'Debug',
     [ValidateRange(1024, 65535)]
@@ -77,10 +78,18 @@ if (-not (Test-Path -LiteralPath (Join-Path $uiDirectory 'node_modules'))) {
     throw "UI dependencies were not found in $uiDirectory`nRun npm install from the ui directory first."
 }
 
+if (-not $UseInMemory) {
+    $env:ConnectionStrings__DefaultConnection = 'Server=192.168.1.80\SQLEXPRESS;Database=JolisoftDemoDB;User Id=dev_user1;Password=dev_user1;TrustServerCertificate=True;Encrypt=False;Application Name=JolisoftDemoApi;Command Timeout=180'
+}
+
 $apiCommand = "`$env:ASPNETCORE_ENVIRONMENT = 'Development'; dotnet `"$apiDll`" --urls http://localhost:$ApiPort"
 $uiCommand = "npm run dev -- --host localhost --port $UiPort --strictPort"
 
 Start-Terminal -Title 'JOLISOFT API' -WorkingDirectory $apiDirectory -Command $apiCommand
 Start-Terminal -Title 'JOLISOFT UI' -WorkingDirectory $uiDirectory -Command $uiCommand
+
+if (-not $UseInMemory) {
+    Remove-Item Env:ConnectionStrings__DefaultConnection -ErrorAction SilentlyContinue
+}
 
 Write-Host "Started Jolisoft local stack: API http://localhost:$ApiPort and UI http://localhost:$UiPort."

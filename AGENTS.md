@@ -19,7 +19,7 @@ Extract useful techniques from the historical projects under `/temp/` and preser
 - Keep generated EF code in `Jolisoft.Demo.EFLayer`; the Web API owns controllers, middleware, DTOs, and application services.
 - Do not hand-edit generated EF files. Regenerate them from the deployed schema when the SQL project changes.
 - Use Data Annotations during EF scaffolding. Generated `OnModelCreating` code may remain when EF requires it.
-- `/secrets/` is the intentional private home for credentials, connection details, and local-environment reference material. Do not scatter secrets through source files or other documentation. Do not move, sanitize, or delete the owner's secret reference files unless explicitly asked.
+- `/secrets/` is the intentional private home for credentials, connection details, and local-environment reference material. The private local launcher may contain the agreed demo credential when convenience is explicitly preferred. Do not move, sanitize, or delete the owner's secret reference files unless explicitly asked.
 - Use the local ports defined by `Start-Local-Stack.ps1`: API `6041`, UI `6173`.
 
 ## Validation

@@ -141,6 +141,40 @@ The cross-project scaffold succeeded with the following important settings:
 
 The startup API retains `Microsoft.EntityFrameworkCore.Design` as a private design-time dependency because EF tools require it for cross-project scaffolding. Runtime EF provider ownership remains in the EFLayer.
 
+### SQL-backed API profile
+
+The API now defaults to the SQL-backed profile when launched by `Start-Local-Stack.ps1`. The launcher constructs `ConnectionStrings__DefaultConnection` in the process environment and passes it only to the child API process. The in-memory profile is retained only as an explicit `-UseInMemory` test option.
+
+The SQL-backed profile was smoke-tested successfully: the API listed existing rows, created a workflow through `POST /api/workflows`, returned an `ACME-LOCAL-*` reference, and read the created record back through `GET /api/workflows`. EF logs confirmed SQL `SELECT` and `INSERT` commands against `WorkflowRecords` with a 180-second command timeout.
+
+### DynamicQuestions iframe slice
+
+The independent `DynamicQuestions` Vite project has been created and builds successfully. Its root page is a fake CRM host; `embedded.html` is the iframe-loaded React app. The slice currently demonstrates readiness/context messages, RJSF schema-driven fields, `react-tabs`, eligibility-based tab skipping, review, and final JSON submission back to the host with `window.postMessage`.
+
+Run it on its own port with the command in `doco/304-dynamic-questions-run.md`.
+
+The browser test passed on both paths:
+
+- Normal path: `eligible = Yes`, assessment tab available, review reached, JSON submitted.
+- Skippable path: `eligible = No`, assessment skipped/disabled, review reached, JSON submitted.
+
+Verified normal-path payload shape:
+
+```json
+{
+  "recordId": "ACME-LOCAL-APPLICATION-001",
+  "status": "Validated",
+  "answers": {
+    "eligible": "Yes",
+    "projectName": "Test project",
+    "hasRisk": true,
+    "notes": "Haha ha this is working well"
+  },
+  "submittedBy": "local-user",
+  "submittedAt": "2026-09-06T12:53:24.338Z"
+}
+```
+
 ## Known-Good Commands
 
 ### Build backend
@@ -175,6 +209,18 @@ API: http://localhost:6041
 UI:  http://localhost:6173
 ```
 
+The normal local workflow is database-backed. This private local launcher contains the agreed demo credential for convenience; it is inherited by the child API process and is not written to appsettings:
+
+```powershell
+.\Start-Local-Stack.ps1
+```
+
+For a deliberately small in-memory test only:
+
+```powershell
+.\Start-Local-Stack.ps1 -UseInMemory
+```
+
 ### EF scaffold
 
 Stop the API first. Use the complete command in `doco/302-ef-database-first-scaffold.md`. The essential pattern is:
@@ -205,13 +251,13 @@ Do not use `sa` for normal scaffolding, application access, or schema work. `sa`
 
 ## Immediate Next Steps
 
-1. Add a private `DefaultConnection` configuration path for the API using `dev_user1`, without committing a password into portable appsettings.
-2. Run the API with SQL persistence enabled and test create/list against `JolisoftDemoDB`.
-3. Remove or avoid any remaining `EnsureCreated` assumptions; the SQL project and deployed database are authoritative.
-4. Confirm the browser workflow works against SQL-backed persistence, not only the in-memory fallback.
-5. Add a repeatable SQLPackage publish command or script and diagnose why SQLPackage initialization stalled.
-6. Commit the current extraction as a coherent checkpoint before starting DynamicQuestions comparison.
-7. Compare the DynamicQuestions implementations from the historical source and document the keep/merge decision in a new numbered document.
+1. Run the browser workflow with `Start-Local-Stack.ps1` and confirm the SQL-backed row survives an API/UI restart.
+2. Add a repeatable SQLPackage publish command or script and diagnose why SQLPackage initialization stalled.
+3. Commit the current extraction as a coherent checkpoint before starting DynamicQuestions comparison.
+4. **Resume here:** add named custom RJSF widgets/fields in `DynamicQuestions/src/fields` for the historical control techniques: text, textarea, checkbox, radio, select, date, and notes/instruction content. Keep the host/iframe/postMessage architecture unchanged.
+5. Add small schema/UI-schema fixtures demonstrating those custom controls, then run `npm run build` from `DynamicQuestions`.
+6. Repeat the browser test from `doco/304-dynamic-questions-run.md`: verify both `eligible = Yes` and `eligible = No`, then verify the final JSON still crosses the iframe boundary.
+7. Preserve selected testRepo3 schema-editor techniques and decide whether they belong in the DynamicQuestions project or a separate foundations example.
 
 ## Do Not Repeat Earlier Mistakes
 

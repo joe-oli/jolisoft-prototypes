@@ -1,0 +1,9 @@
+.host-shell { min-height: 100vh; padding: 30px clamp(20px, 5vw, 80px); background: #f2eee5; }
+.host-header { max-width: 1180px; margin: 0 auto 20px; display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.host-kicker { color: #dc654e; font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.host-header h1 { margin: 8px 0 0; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 400; letter-spacing: -.05em; }
+.host-status { color: #61716e; font-size: .8rem; }.status-dot { display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; background: #6eaa8e; }
+.host-context, .host-frame-wrap, .payload-panel { max-width: 1180px; margin: 0 auto; }.host-context { display: flex; gap: 20px; align-items: center; border-top: 1px solid #c9c8bd; border-bottom: 1px solid #c9c8bd; padding: 12px 0; color: #71807c; font-size: .76rem; }.host-context strong { color: #18343a; font-size: .78rem; }
+.host-frame-wrap { margin-top: 24px; padding: 10px; background: #18343a; box-shadow: 16px 16px 0 #dba28e; }.host-frame-wrap iframe { display: block; width: 100%; height: 690px; border: 0; background: #fbfaf6; }
+.payload-panel { margin-top: 48px; padding: 24px; background: #d9ded4; }.payload-panel h2 { margin: 8px 0 0; font-family: Georgia, serif; font-size: 2rem; font-weight: 400; }.payload-panel pre { min-height: 80px; margin: 20px 0 0; overflow: auto; padding: 16px; color: #b9d3c8; background: #18343a; font-size: .75rem; line-height: 1.5; }
+@media (max-width: 700px) { .host-header { display: block; }.host-status { display: block; margin-top: 15px; }.host-context { flex-wrap: wrap; gap: 8px 14px; }.host-frame-wrap { padding: 6px; }.host-frame-wrap iframe { height: 730px; }.payload-panel { margin-top: 32px; } }
