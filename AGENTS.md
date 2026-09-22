@@ -4,22 +4,22 @@ This is a private personal archive of Jolisoft prototypes. Read [doco/999-handof
 
 ## Required Local Source Archive
 
-Before doing any repository work, verify that the local `/temp/` directory exists. It is a required source archive for this workspace, is intentionally untracked, and is not included in repository history. A fresh clone or a new computer will not contain it automatically.
+Before doing any repository work, verify that `./temp/` exists directly under the repository root, alongside this `AGENTS.md` file. This is the required local source archive for this workspace. It is intentionally untracked and is not included in repository history; a fresh clone or a new computer will not contain it automatically.
 
-If `/temp/` does not exist, stop and tell the user: "I cannot continue making changes on this computer because the required local `/temp/` source archive is missing." Do not continue by guessing, reconstructing, or treating the repository as complete without it. This prerequisite gate does not prevent updating this instruction file to establish or clarify the gate itself.
+If `./temp/` does not exist at that repository-root location, stop and tell the user: "I cannot continue making changes on this computer because the required local `./temp/` source archive is missing." Do not continue by guessing, reconstructing, or treating the repository as complete without it. This prerequisite gate does not prevent updating this instruction file to establish or clarify the gate itself.
 
 ## Repository Purpose
 
-Extract useful techniques from the historical projects under `/temp/` and preserve them as a small collection of buildable Jolisoft prototypes, full mini-systems, generated database-first layers, and focused demonstrations. `/temp/` is the source archive; the new repository is the curated result. The owner may delete `/temp/` manually after salvage is complete.
+Extract useful techniques from the historical projects under `./temp/` and preserve them as a small collection of buildable Jolisoft prototypes, full mini-systems, generated database-first layers, and focused demonstrations. The `./temp/` directory, located at the repository root beside `AGENTS.md`, is the source archive; the new repository is the curated result. The owner may delete `./temp/` manually after salvage is complete.
 
 ## Working Rules
 
-- Do not modify or delete anything under `/temp/`. It is historical source material and may be manually deleted later by the owner.
+- Do not modify or delete anything under `./temp/`. It is historical source material and may be manually deleted later by the owner.
 - Do not introduce the retired historical project name into new code, namespaces, documentation identity, or project names. Use `Jolisoft` for real project identity and `ACME` for fictional external services.
 - Keep the showcase local-first and private. Use fakes/mocks for cloud, CRM, Dataverse, SharePoint, Blob Storage, and observability integrations by default.
 - Prefer complete, buildable mini-systems over isolated snippets. Keep schemas intentionally small and technique-focused.
 - Use React + TypeScript + Vite for the catalog shell, Bootstrap for global styling, and CSS Modules for local overrides.
-- New active .NET projects target .NET 10. Do not change historical frameworks under `/temp/`.
+- New active .NET projects target .NET 10. Do not change historical frameworks under `./temp/`.
 - Keep the API controller-based. Do not replace controllers with Minimal APIs unless explicitly requested.
 - Keep database ownership database-first: the SDK-style SQL project owns the schema, and EF classes are generated outputs.
 - Keep generated EF code in `Jolisoft.Demo.EFLayer`; the Web API owns controllers, middleware, DTOs, and application services.
