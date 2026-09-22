@@ -2,6 +2,12 @@
 
 This is a private personal archive of Jolisoft prototypes. Read [doco/999-handoff.md](doco/999-handoff.md) first for the current state and next steps.
 
+## Required Local Source Archive
+
+Before doing any repository work, verify that the local `/temp/` directory exists. It is a required source archive for this workspace, is intentionally untracked, and is not included in repository history. A fresh clone or a new computer will not contain it automatically.
+
+If `/temp/` does not exist, stop and tell the user: "I cannot continue making changes on this computer because the required local `/temp/` source archive is missing." Do not continue by guessing, reconstructing, or treating the repository as complete without it. This prerequisite gate does not prevent updating this instruction file to establish or clarify the gate itself.
+
 ## Repository Purpose
 
 Extract useful techniques from the historical projects under `/temp/` and preserve them as a small collection of buildable Jolisoft prototypes, full mini-systems, generated database-first layers, and focused demonstrations. `/temp/` is the source archive; the new repository is the curated result. The owner may delete `/temp/` manually after salvage is complete.
