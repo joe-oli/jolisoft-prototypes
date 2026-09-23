@@ -27,9 +27,13 @@ The root page is the fake CRM host. It loads `/embedded.html` in an iframe, send
 
 Both the normal and skippable eligibility paths have been tested successfully. The normal path produced a validated payload containing `recordId`, `status`, `answers`, `submittedBy`, and `submittedAt`; the host displayed the payload received from the iframe.
 
-## Resume point
+## Custom control fixture
 
-The next implementation step is to add named custom RJSF widgets/fields under `DynamicQuestions/src/fields` for text, textarea, checkbox, radio, select, date, and notes/instruction content. Do not redesign the iframe host boundary. After the widgets are added, rebuild and repeat both eligibility browser paths.
+The embedded assessment registers named RJSF controls under `DynamicQuestions/src/fields` for text, textarea, checkbox, radio, select, and date input, plus an instruction-content field. `src/schemas/assessment.ts` is a small schema/UI-schema fixture that exercises those controls. The instruction field renders plain schema text rather than arbitrary HTML.
+
+The iframe host boundary remains unchanged. After a control-library change, run the build and repeat both eligibility browser paths.
+
+The custom-control fixture passed both browser paths on 2026-09-23.
 
 ## Build
 

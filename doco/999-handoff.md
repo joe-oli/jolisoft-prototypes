@@ -95,7 +95,7 @@ The table definition is:
 - `CreatedBy NVARCHAR(160) NOT NULL`
 - `CreatedAt DATETIMEOFFSET(7) NOT NULL`
 
-The DACPAC publish through SQLPackage stalled during initialization on this machine. The authoritative table was then created directly in `JolisoftDemoDB` from the same SQL definition using `dev_user1`. Revisit SQLPackage publishing later; do not silently replace the SQL project as the schema authority.
+The DACPAC publish through SQLPackage previously stalled during initialization on this machine. The authoritative table was then created directly in `JolisoftDemoDB` from the same SQL definition using `dev_user1`. `Publish-Local-Database.ps1` now provides the intended safe repeatable path: it builds the DACPAC, generates a reviewable deployment script, and publishes only with `-Publish`. Diagnose the prior stall using that helper; do not silently replace the SQL project as the schema authority.
 
 ### SQL Server database
 
@@ -158,6 +158,8 @@ The browser test passed on both paths:
 - Normal path: `eligible = Yes`, assessment tab available, review reached, JSON submitted.
 - Skippable path: `eligible = No`, assessment skipped/disabled, review reached, JSON submitted.
 
+The same two paths were repeated successfully after adding the custom control library on 2026-09-23.
+
 Verified normal-path payload shape:
 
 ```json
@@ -174,6 +176,12 @@ Verified normal-path payload shape:
   "submittedAt": "2026-09-06T12:53:24.338Z"
 }
 ```
+
+### DynamicQuestions custom control library
+
+The DynamicQuestions extraction now has named RJSF registrations under `DynamicQuestions/src/fields` for text, textarea, checkbox, radio, select, and date input, plus an instruction-content field. `src/schemas/assessment.ts` contains the small JSON-schema/UI-schema fixture that exercises them. The instruction field renders plain schema text rather than arbitrary schema HTML.
+
+`npm run build` passed after this addition. The fake host/iframe/message boundary and eligibility navigation were not changed. Repeat the two browser paths before treating this checkpoint as browser-verified.
 
 ## Known-Good Commands
 
@@ -252,12 +260,10 @@ Do not use `sa` for normal scaffolding, application access, or schema work. `sa`
 ## Immediate Next Steps
 
 1. Run the browser workflow with `Start-Local-Stack.ps1` and confirm the SQL-backed row survives an API/UI restart.
-2. Add a repeatable SQLPackage publish command or script and diagnose why SQLPackage initialization stalled.
+2. Run `Publish-Local-Database.ps1` locally to generate a deployment plan, then diagnose the previously observed SQLPackage initialization stall if it recurs. Use `-Publish` only after reviewing the plan.
 3. Commit the current extraction as a coherent checkpoint before starting DynamicQuestions comparison.
-4. **Resume here:** add named custom RJSF widgets/fields in `DynamicQuestions/src/fields` for the historical control techniques: text, textarea, checkbox, radio, select, date, and notes/instruction content. Keep the host/iframe/postMessage architecture unchanged.
-5. Add small schema/UI-schema fixtures demonstrating those custom controls, then run `npm run build` from `DynamicQuestions`.
-6. Repeat the browser test from `doco/304-dynamic-questions-run.md`: verify both `eligible = Yes` and `eligible = No`, then verify the final JSON still crosses the iframe boundary.
-7. Preserve selected testRepo3 schema-editor techniques and decide whether they belong in the DynamicQuestions project or a separate foundations example.
+4. Commit the DynamicQuestions custom-controls checkpoint; the `Yes` and `No` browser paths and host payload boundary were re-verified on 2026-09-23.
+5. Preserve selected testRepo3 schema-editor techniques and decide whether they belong in the DynamicQuestions project or a separate foundations example.
 
 ## Do Not Repeat Earlier Mistakes
 

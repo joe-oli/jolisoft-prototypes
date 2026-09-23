@@ -1,32 +1,20 @@
-# React + TypeScript + Vite
+# DynamicQuestions
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A local-first CRM-style dynamic assessment demonstration. The root page is a fake host and `embedded.html` is the separately mounted React web-resource-style app. The two exchange context and the final payload through `window.postMessage`.
 
-Currently, two official plugins are available:
+## Run and build
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From this directory:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```powershell
+npm run dev -- --host localhost --port 6174 --strictPort --open
+npm run build
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open `http://localhost:6174/`. See `../doco/304-dynamic-questions-run.md` for the workflow checks.
+
+## Control library
+
+`src/fields` contains named RJSF registrations for text, textarea, checkbox, radio, select, and date controls, plus an instruction-content field. `src/schemas/assessment.ts` provides the deliberately small JSON-schema/UI-schema fixture that exercises every control while preserving the eligibility-driven wizard.
+
+The instruction field renders plain schema text; it intentionally does not insert arbitrary HTML from a schema.

@@ -1,5 +1,6 @@
 # Historical source archive - kept on disk, excluded from this repository
 /temp/
+/artifacts/
 
 # Node.js / React / Vite
 **/node_modules/
