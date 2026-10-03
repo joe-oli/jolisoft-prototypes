@@ -1,44 +1,49 @@
-# DynamicQuestions Iframe Demo
+﻿# DynamicQuestions Iframe Demo
 
-## Run
+## Run and build
 
 From the repository root:
 
 ```powershell
 Set-Location .\DynamicQuestions
-npm install
-npm run dev -- --host localhost --port 6174 --strictPort --open
+npm ci
+npm run build
+npm run dev -- --host localhost --port 6174 --strictPort
 ```
 
-Open the Vite host page at `http://localhost:6174/`.
+Open `http://localhost:6174/`. The fake CRM host loads `/embedded.html` in an iframe. The separate foundations workbench is `/foundations.html`. The production build explicitly emits all three HTML entries and their static assets.
 
-The root page is the fake CRM host. It loads `/embedded.html` in an iframe, sends fake record context with `window.postMessage`, and displays the final JSON payload received from the embedded app.
+## Lifecycle walkthrough
 
-## Demonstrated behavior
+1. Choose Yes and use Save & Next. The host saves the eligibility draft before Assessment opens.
+2. Fill the project name and risk level; exercise checkbox, date, and notes controls. Save draft also allows incomplete answers.
+3. Refresh or use Reload saved assessment. Saved answers are loaded through host context; unsaved host reloads require discard confirmation.
+4. Save & Next to Review, then Submit JSON to host. Whole-assessment validation prevents direct Review navigation from bypassing required answers.
+5. The host displays the persisted Validated payload, including submission metadata. Mark completed changes it to Completed and reloads a read-only assessment.
+6. Access = Read-only viewer disables editing even on a Draft or Validated record. The host rejects saves in viewer mode or for Completed records.
+7. In a fresh browser profile or after removing only this demo's local storage entry, repeat with No. Assessment is disabled/skipped; the submitted answers contain only the eligibility answer.
 
-- The embedded React app announces readiness to the host.
-- The host sends record ID, mode, and user context.
-- RJSF renders schema-driven question controls.
-- `react-tabs` provides the wizard tabs.
-- An ineligible answer disables the assessment tab and sends the user directly to review.
-- The final submit sends a JSON payload back to the host with `window.postMessage`.
+The local record storage key is `jolisoft.assessment.v1.ACME-LOCAL-APPLICATION-001`. Storage belongs to the fake host and persists within the same browser and origin. The app does not use the SQL database for these assessments.
 
-## Verified browser result
+## Adapter and message boundary
 
-Both the normal and skippable eligibility paths have been tested successfully. The normal path produced a validated payload containing `recordId`, `status`, `answers`, `submittedBy`, and `submittedAt`; the host displayed the payload received from the iframe.
+`src/adapters/contracts.ts` defines typed host context, record, and save messages. `LocalAssessmentStore` implements a persistence interface using host localStorage. `IframeAssessmentAdapter` sends a save request with a request ID and waits for the host acknowledgement, with a timeout.
 
-## Custom control fixture
+The host and iframe both check source window and origin. The host checks the request record, answer types, validation, and editability before storage. Save failure leaves the embedded answers dirty. These are local demonstration controls; the fake access selector is not real CRM authorization.
 
-The embedded assessment registers named RJSF controls under `DynamicQuestions/src/fields` for text, textarea, checkbox, radio, select, and date input, plus an instruction-content field. `src/schemas/assessment.ts` is a small schema/UI-schema fixture that exercises those controls. The instruction field renders plain schema text rather than arbitrary HTML.
+## Control library and fixtures
 
-The iframe host boundary remains unchanged. After a control-library change, run the build and repeat both eligibility browser paths.
+`src/fields` registers text, textarea, checkbox, radio, select, date, and instruction controls. `src/schemas/assessment.ts` defines the deliberately small schema/UI-schema fixture. Instructions render plain text rather than arbitrary HTML.
 
-The custom-control fixture passed both browser paths on 2026-09-23.
-
-## Build
+## Browser checks
 
 ```powershell
 npm run build
+npm run test:browser
 ```
 
-The Vite build includes the host entry and the `embedded.html` entry so the embedded app remains deployable as a separate static web-resource-style asset.
+The Playwright suite uses installed Edge in headless mode and starts a production preview on port 6174. Stop an existing server on that port first. Tests use isolated browser contexts and do not alter the owner's saved demo answers.
+
+The suite covers eligibility paths, refresh persistence, submission metadata, completed/viewer controls, validation bypass, discarded assessment answers, unsaved-change cancellation, storage failure, message-origin checks, host save rejection, and the foundations editor/custom validation.
+
+All six browser tests passed against the production build on 2026-10-03. Backend and both frontend builds passed, and both frontend lint checks passed.

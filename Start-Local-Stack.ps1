@@ -79,7 +79,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $uiDirectory 'node_modules'))) {
 }
 
 if (-not $UseInMemory) {
-    $env:ConnectionStrings__DefaultConnection = 'Server=192.168.1.80\SQLEXPRESS;Database=JolisoftDemoDB;User Id=dev_user1;Password=dev_user1;TrustServerCertificate=True;Encrypt=False;Application Name=JolisoftDemoApi;Command Timeout=180'
+    $env:ConnectionStrings__DefaultConnection = 'Server=192.168.1.20,1433;Database=JolisoftDemoDB;User Id=dev_user1;Password=dev_user1;TrustServerCertificate=True;Encrypt=False;Application Name=JolisoftDemoApi;Command Timeout=180'
 }
 
 $apiCommand = "`$env:ASPNETCORE_ENVIRONMENT = 'Development'; dotnet `"$apiDll`" --urls http://localhost:$ApiPort"

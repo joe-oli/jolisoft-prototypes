@@ -4,7 +4,7 @@
 
 Keep both concepts, but not both duplicate implementations:
 
-- Preserve the `testRepo3` CRA project as an RJSF foundations reference. Its schema editor, local fixtures, custom-field experiments, and manual validation examples are materially different.
+- Preserve selected `testRepo3` CRA techniques as a separate RJSF foundations page. Its schema editor, local fixtures, custom-field experiments, and manual validation examples are materially different. The extraction is implemented at `DynamicQuestions/foundations.html`; see `203-rjsf-foundations.md`.
 - Use `testRepo4/CrmDynamicQuestions` as the canonical focused DynamicQuestions extraction. It is self-contained and demonstrates the clearest CRM-oriented form workflow.
 - Preserve the broader `testRepo6/POC-dynamic-questions-v2/Main` modules separately as historical CRM integration material. Do not merge those modules wholesale into the focused form demo.
 - Do not keep testRepo4 and testRepo6 as duplicate standalone DynamicQuestions projects. Their focused `src` implementations and build configuration are substantially duplicated.
@@ -87,6 +87,8 @@ DynamicQuestions/
 
 The showcase version does not reproduce every CRM field or every historical payload. It will keep a small schema and answer model sufficient to demonstrate the techniques. The local implementation runs without Dynamics or Dataverse by using a fake CRM host, but it deliberately preserves the embedded-host boundary and the shape of the eventual XRM integration.
 
-## Next extraction
+## Extraction checkpoint: 2026-10-03
 
-Create an independent `DynamicQuestions` React + TypeScript + Vite project using the showcase conventions. Build the fake host and embedded React asset boundary first, then add the RJSF custom fields, `react-tabs` wizard, eligibility-driven navigation, draft/validated state, and final JSON submission. Keep the historical Webpack/XRM packaging decisions documented, but do not make them prerequisites for the local demo.
+The independent DynamicQuestions Vite project now includes the fake host, embedded React app, custom controls, eligibility wizard, acknowledged draft saving, dirty state, validated submission, and completed/viewer read-only handling. Host-owned localStorage implements the local persistence interface; the iframe accesses it through its message adapter. Source and origin are checked at both ends.
+
+The foundations workbench is a separate static entry in the same build, sharing controls and dependencies. All three entries are emitted in production. Historical Webpack/XRM packaging and the broader testRepo6 integration modules remain historical references rather than prerequisites. A real Dataverse adapter is still optional future work.

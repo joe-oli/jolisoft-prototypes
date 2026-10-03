@@ -1,48 +1,31 @@
-# First Full-System Slice
+﻿# First Full-System Slice
 
-Status: API slice complete; backend targets .NET 10
+Status: SQL-backed browser create/list/restart verified on Linux, 2026-10-03.
 
-## Purpose
+## Purpose and flow
 
-Prove the smallest useful multi-tier pattern before extracting larger historical systems. The first record is intentionally small: it demonstrates validation, audit fields, persistence, middleware, and an external platform boundary without reproducing a complete business schema.
-
-## Current flow
+The deliberately small slice demonstrates validation, audit fields, persistence, request timing, and a fake external platform boundary.
 
 ```text
-HTTP client -> WorkflowsController -> IWorkflowStore -> in-memory store
-                                      |
-                                      -> IPlatformGateway -> FakePlatformGateway
+ShowcaseShell -> Vite /api proxy -> WorkflowsController -> IWorkflowStore
+                                                          -> EfWorkflowStore -> Linux SQL Server
+                                                          -> IPlatformGateway -> FakePlatformGateway
 ```
 
-`RequestTimingMiddleware` surrounds the request and logs method, path, status code, and elapsed time.
+`RequestTimingMiddleware` logs method, path, status, and elapsed time. `WorkflowsController` supports GET and POST at `/api/workflows`. The fake gateway returns `ACME-LOCAL-*` references without external network access.
 
-## Model
+## Database-first ownership
 
-`WorkflowRecord` contains only, with EF mapping expressed through Data Annotation attributes:
+`Jolisoft.Demo.Database/Tables/WorkflowRecords.sql` owns `Id`, `Title`, `Status`, `CreatedBy`, and `CreatedAt`. Generated entity and context files belong in `Jolisoft.Demo.EFLayer`. Data Annotations are requested during scaffolding; generated fluent mapping can remain when required by EF.
 
-- `Id`
-- `Title`
-- `Status`
-- `CreatedBy`
-- `CreatedAt`
+The API owns controllers, DTOs, middleware, and application services. Do not hand-edit generated EF output or use EF migrations as the schema authority.
 
-The model uses `[Table]`, `[Key]`, `[Required]`, and `[MaxLength]`. The DbContext deliberately has no fluent `OnModelCreating` mapping for this small example.
+## Profiles
 
-The fields `CreatedBy` and `CreatedAt` remain because audit behavior is part of the technique. The historical business-specific question fields are intentionally absent.
+`Start-Local-Stack.ps1` defaults to `JolisoftDemoDB` on Linux SQL Server at `192.168.1.20,1433`. The explicit `-UseInMemory` launcher option uses an in-memory store. Direct API startup without a connection string also selects the in-memory store.
 
-## Persistence boundary
+The in-memory profile persists only for the lifetime of its API process. SQL-backed records survive restarts. The browser/API/UI restart cycle was verified on 2026-10-03; see `303-sql-backed-workflow-test.md`.
 
-The API uses `IWorkflowStore`:
+## Follow-on work
 
-- No connection string: `InMemoryWorkflowStore` runs locally without infrastructure.
-- `ConnectionStrings:DefaultConnection` supplied: `EfWorkflowStore` uses EF Core and SQL Server.
-
-The database-first path is authoritative for the SQL-backed profile: the SDK-style SQL project defines `WorkflowRecords`, publishes the DACPAC, and EF Core reverse scaffolding generates the entity and DbContext. The generated classes are outputs, not the source of the database schema.
-
-## Fake platform boundary
-
-`IPlatformGateway` represents a cloud/CRM-style external service. `FakePlatformGateway` returns an `ACME-LOCAL-*` reference and requires no network access. A later example can add a real adapter without changing the controller contract.
-
-## Next step
-
-Connect the Vite catalog shell to this API with a small create/list workflow view. Keep the API's local fake default and preserve the SQL Server path as an optional configuration profile.
+The first vertical slice is complete. Keep its schema small when adding selected historical techniques such as document/blob handling or richer observability.

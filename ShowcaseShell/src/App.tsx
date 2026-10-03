@@ -8,6 +8,7 @@ type ShowcaseItem = {
   stack: string[]
   status: string
   tone: string
+  href?: string
 }
 
 const showcaseItems: ShowcaseItem[] = [
@@ -18,14 +19,16 @@ const showcaseItems: ShowcaseItem[] = [
     stack: ['React', 'ASP.NET Core', 'SQL Server'],
     status: 'First vertical slice',
     tone: 'teal',
+    href: '#workflow-title',
   },
   {
     number: '02',
     title: 'DynamicQuestions',
     summary: 'Schema-driven forms, custom widgets, validation, and the patterns that grew from the CRM question experiments.',
     stack: ['React', 'TypeScript', 'RJSF'],
-    status: 'Comparison pending',
+    status: 'Hosted assessment and foundations',
     tone: 'coral',
+    href: 'http://localhost:6174/',
   },
   {
     number: '03',
@@ -84,10 +87,11 @@ function App() {
               <div>
                 <h3>{item.title}</h3>
                 <p>{item.summary}</p>
+                {item.number === '02' && <a href="http://localhost:6174/foundations.html">Open the schema foundations workbench</a>}
               </div>
               <div className="system-card__footer">
                 <div className="tag-list">{item.stack.map((tag) => <span className="badge rounded-pill" key={tag}>{tag}</span>)}</div>
-                <button className="icon-button" type="button" aria-label={`Open ${item.title}`} title="Open system">↗</button>
+                {item.href ? <a className="icon-button" href={item.href} aria-label={`Open ${item.title}`} title="Open system">↗</a> : <span className="icon-button" aria-label={`${item.title} planned`}>—</span>}
               </div>
             </article>
           ))}

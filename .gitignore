@@ -1,6 +1,7 @@
 # Historical source archive - kept on disk, excluded from this repository
 /temp/
 /artifacts/
+/secrets/jolisoft-demo.connection-string.txt
 
 # Node.js / React / Vite
 **/node_modules/

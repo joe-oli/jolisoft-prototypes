@@ -1,0 +1,5 @@
+﻿.controls { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 18px 0; font-size: .8rem; }
+.controls label { display: flex; align-items: center; gap: 8px; }
+.controls button, .controls select { border: 1px solid #b7c2ba; padding: 8px 12px; background: #fff; color: #18343a; }
+.controls button:disabled { opacity: .5; }
+.controls a { margin-left: auto; color: #18343a; }

@@ -68,7 +68,8 @@ $commonArguments = @(
     "/SourceFile:$dacpac",
     "/TargetConnectionString:$ConnectionString",
     '/p:BlockOnPossibleDataLoss=True',
-    '/p:DropObjectsNotInSource=False'
+    '/p:DropObjectsNotInSource=False',
+    '/p:ScriptDatabaseOptions=False'
 )
 
 & $sqlPackageCommand.Path '/Action:Script' @commonArguments "/OutputPath:$scriptPath"

@@ -1,75 +1,81 @@
-# How to run Jolisoft Prototypes
+﻿# How to run Jolisoft Prototypes
 
-This repository contains separate local demonstrations. Start the one you want to inspect; the DynamicQuestions demo does not require the API or ShowcaseShell stack.
+These are separate local demonstrations. DynamicQuestions and its foundations page do not require the API/catalog stack.
 
-## DynamicQuestions
+## 1. Initial setup and builds
 
-This is a fake CRM host page that loads the React assessment in an iframe. The host and embedded assessment exchange context and the submitted JSON through `window.postMessage`.
+```powershell
+Set-Location C:\PROJECTS\EMDG
+.\Build-Local-Backend.ps1
+Set-Location .\ShowcaseShell
+npm ci
+npm run build
+Set-Location ..\DynamicQuestions
+npm ci
+npm run build
+```
+
+The required historical `temp/` folder must exist at the repository root before repository work. Do not modify it.
+
+## 2. DynamicQuestions and RJSF foundations
 
 ```powershell
 Set-Location C:\PROJECTS\EMDG\DynamicQuestions
-npm run build
-npm run dev -- --host localhost --port 6174 --strictPort --open
+npm run dev -- --host localhost --port 6174 --strictPort
 ```
 
-Open `http://localhost:6174/` if the browser does not open automatically.
+Open `http://localhost:6174/` for the fake CRM host and iframe assessment. Open `http://localhost:6174/foundations.html` for the separate schema/UI-schema editor and manual validation workbench.
 
-Verify both flows:
+Save & Next persists a validated step through the host. Save draft permits incomplete answers. Refresh reloads saved answers. Submission validates all applicable steps and produces a Validated record; Mark completed in the host makes it read-only. Viewer access is also read-only. Choose No in a fresh demo record to see the assessment tab skipped. The host owns browser-local storage; it does not use SQL for assessments.
 
-1. Confirm the host shows **Embedded React app connected**.
-2. Choose **Yes**, proceed to Assessment, fill the project name and risk level, exercise the checkbox, select, date, and notes controls, then submit. Confirm the host displays the JSON payload.
-3. Refresh, choose **No**, and proceed. Confirm Assessment is disabled/skipped, Review is reachable, and submission again displays a JSON payload in the host.
+For full walkthroughs see `doco/304-dynamic-questions-run.md` and `doco/203-rjsf-foundations.md`.
 
-Stop the Vite server with `Ctrl+C` in its terminal.
+Stop Vite with Ctrl+C. Browser checks start their own production preview, so stop any existing server on port 6174 before running:
 
-## API and ShowcaseShell stack
+```powershell
+npm run build
+npm run test:browser
+```
 
-This starts the database-backed workflow API and the catalog shell in separate PowerShell windows.
+These checks use installed Edge in headless mode and isolated browser storage.
+
+## 3. API and catalog stack
 
 ```powershell
 Set-Location C:\PROJECTS\EMDG
 .\Start-Local-Stack.ps1
 ```
 
-Open:
+The launcher opens visible API/UI terminals and defaults to Linux SQL Server `192.168.1.20,1433`, database `JolisoftDemoDB`, using the private demo login.
 
-- API: `http://localhost:6041`
-- ShowcaseShell: `http://localhost:6173`
+- API: `http://localhost:6041/api/workflows`
+- Catalog: `http://localhost:6173`
 
-For an intentionally small, in-memory API test instead of the normal SQL-backed profile:
+The catalog links to DynamicQuestions and the foundations workbench. Start DynamicQuestions separately before following those links.
+
+For an explicit in-memory API demonstration:
 
 ```powershell
 .\Start-Local-Stack.ps1 -UseInMemory
 ```
 
-## Build checks
+SQL-backed workflows survive API/UI restarts; in-memory workflows last only for the API process. See `doco/303-sql-backed-workflow-test.md` for the repeatable browser restart script.
+
+## 4. Database deployment plan
+
+Supply the private Linux connection string as described in `doco/305-sqlpackage-publish.md`. If needed, install SQLPackage into the ignored workspace tool folder:
 
 ```powershell
 Set-Location C:\PROJECTS\EMDG
-.\Build-Local-Backend.ps1
-
-Set-Location .\ShowcaseShell
-npm run build
-
-Set-Location ..\DynamicQuestions
-npm run build
-```
-
-## Database deployment plan
-
-Generate a reviewable SQLPackage deployment script without changing the database:
-
-```powershell
-Set-Location C:\PROJECTS\EMDG
+dotnet tool install Microsoft.SqlPackage --tool-path .\artifacts\tools
+$env:PATH = (Join-Path (Get-Location) 'artifacts/tools') + ';' + $env:PATH
 .\Publish-Local-Database.ps1
 ```
 
-After reviewing the generated `artifacts/database/*.sql` file, apply a freshly built DACPAC with:
+Review the generated `artifacts/database/*.sql` plan. The helper preserves server-managed database options and changes nothing without explicit publish:
 
 ```powershell
 .\Publish-Local-Database.ps1 -Publish
 ```
 
-The connection string must be supplied privately as described in `doco/305-sqlpackage-publish.md`.
-
-Further detail for the DynamicQuestions test is in `doco/304-dynamic-questions-run.md`. Database-first EF guidance is in `doco/302-ef-database-first-scaffold.md`.
+The Linux plan reviewed on 2026-10-03 requires no schema changes, so there is nothing to publish for that checkpoint. If a future schema change is deployed, stop the API and regenerate the EF layer using `doco/302-ef-database-first-scaffold.md`.

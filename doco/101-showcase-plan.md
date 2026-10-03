@@ -1,7 +1,7 @@
 # Jolisoft Showcase Plan
 
-Status: implementation started; first API slice complete; active backend targets .NET 10
-Last revised: 2026-09-06
+Status: SQL-backed slice, hosted assessment lifecycle, and RJSF foundations implemented
+Last revised: 2026-10-03
 
 Proposed repository name: `jolisoft-prototypes`
 
@@ -95,12 +95,14 @@ Use numbered Markdown files so the archive remains easy to scan and extend:
 
 1. Create the Vite React TypeScript catalog shell with Bootstrap and CSS Modules. **Complete.**
 2. Add catalog entries and navigation for the planned systems. **Complete.**
-3. Add one thin vertical full-system slice with a minimal schema, API, middleware, UI, and fake service boundary. **Complete for the in-memory local profile; SQL Server/LocalDB validation remains next.**
-4. Compare the dynamic-question implementations and document whether they remain separate or are merged.
+3. Add one thin vertical full-system slice with a minimal schema, API, middleware, UI, and fake service boundary. **Complete; browser create/list/restart verified against Linux SQL Server.**
+4. Compare the dynamic-question implementations and document whether they remain separate or are merged. **Complete; focused assessment and separate foundations page share a build and controls.**
 5. Add the remaining full-system and WPF/Dataverse examples incrementally, keeping each buildable.
 6. Keep configuration and private local references in `secrets`.
 7. Update this document as decisions change.
 
 ## Scope boundary
+
+The active relational target is now Linux SQL Server at `192.168.1.20,1433`. The 2026-10-03 owner update supersedes the old Windows instance; see `999-handoff.md` for verified state.
 
 Do not modify or delete source material under `temp` during curation. Other than that, the useful techniques, integrations, mocks, local services, full-system examples, and supporting tooling are all candidates for inclusion in the personal archive.
