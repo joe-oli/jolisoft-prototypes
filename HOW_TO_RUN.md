@@ -79,3 +79,23 @@ Review the generated `artifacts/database/*.sql` plan. The helper preserves serve
 ```
 
 The Linux plan reviewed on 2026-10-03 requires no schema changes, so there is nothing to publish for that checkpoint. If a future schema change is deployed, stop the API and regenerate the EF layer using `doco/302-ef-database-first-scaffold.md`.
+
+## 5. WPFTools desktop query example
+
+From the repository root:
+
+```powershell
+dotnet run --project .\WPFTools\Jolisoft.WPFTools\Jolisoft.WPFTools.csproj
+```
+
+This independent Windows desktop demo needs no API, SQL, or Dataverse service. Toggle the active and expiry filters and Join active organisation, then click Run SDK query. With the default filters, joined mode returns three assessments across two pages and displays Organisation names; turning the join off returns six assessments across three pages. Turning off all three checkboxes returns eight rows across four pages. The status reports the retrieve-all loop's requests, using two rows per page. It evaluates real SDK query objects over fictional records. See `WPFTools/README.md` for current limitations and headless checks.
+
+Paging is automatic: Run SDK query retrieves all pages through SDK service calls and displays every returned row together in the grid. There are no Next/Previous controls. The status's page count refers to retrieval requests, not UI pages.
+
+The window automatically shows the fixed assessment state choices inline: `0 = Active; 1 = Inactive`. These definitions are independent of the selected filters and supply the grid's State labels. They are retrieved from local fixture metadata through the SDK request boundary when the query runs; no separate button or Dataverse connection is needed.
+
+Click Retry scenarios… at the top right to open a separate window. Select a scenario and click Run scenario: temporary failures recover on attempt 3, repeated temporary failures stop at attempt 3, and an unsupported query stops at attempt 1. The visible trace shows attempts and waits (200 ms, then 400 ms). Every run starts fresh; closing the retry window cancels pending waits. These are local simulations, not real Dataverse fault/throttling handling.
+
+Click SDK LINQ… to open a separate typed-query window. All three checkboxes start checked: the active/current query joined to an active organisation with registration ACME-LOCAL-001 returns three assessments and Organisation names. Turn off Join active organisation to see six. With the join enabled, either assessment filter alone returns four rows; neither returns five. Without the join, either filter alone returns seven; neither returns eight. Click Run SDK LINQ after changing checkboxes. The trace shows actual SDK-generated predicates, join alias and link details. Models are handwritten for local fixtures.
+
+The root solution and `Build-Local-Backend.ps1` include all three WPFTools projects. In the catalog, the WPFTools card takes you to these desktop run instructions. Run the command above in a terminal to open the WPF window.

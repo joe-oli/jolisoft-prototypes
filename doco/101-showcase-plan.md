@@ -1,7 +1,9 @@
 # Jolisoft Showcase Plan
 
-Status: SQL-backed slice, hosted assessment lifecycle, and RJSF foundations implemented
-Last revised: 2026-10-03
+Status: SQL-backed slice, hosted assessment lifecycle, RJSF foundations, and selected WPFTools scope implemented
+Last revised: 2026-10-04
+
+Owner-agreed resume point: implement `205-local-http-diagnostics-plan.md`, starting with section 3, slice 1. WPFTools and the selected RJSF/AJV chapter are closed; additional reference techniques are preserved in documents 206 and 207. HTTP diagnostics implementation has not started.
 
 Proposed repository name: `jolisoft-prototypes`
 

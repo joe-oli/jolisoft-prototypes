@@ -1,0 +1,26 @@
+<Window x:Class="Jolisoft.WPFTools.RetryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Jolisoft WPFTools — Retry scenarios" Height="480" Width="740"
+        MinHeight="420" MinWidth="620" WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="24">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Retry and failure scenarios" FontSize="26" Margin="0,0,0,12"/>
+            <TextBlock Text="Local simulation: up to 3 attempts, waiting 200 ms then 400 ms. Each run starts fresh."
+                       TextWrapping="Wrap" Margin="0,0,0,12"/>
+            <TextBlock Text="Temporary failures are retried. Unsupported queries stop immediately. This does not simulate real Dataverse throttling."
+                       TextWrapping="Wrap" Margin="0,0,0,16"/>
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <ComboBox x:Name="Scenario" SelectedIndex="0" VerticalContentAlignment="Center" Margin="0,0,16,0">
+                    <ComboBoxItem Content="Two temporary failures, then success"/>
+                    <ComboBoxItem Content="Temporary failures exhaust the retry limit"/>
+                    <ComboBoxItem Content="Unsupported query stops without retry"/>
+                </ComboBox>
+                <Button x:Name="RunScenario" Grid.Column="1" Content="Run scenario" Click="RunRetryScenario" Padding="16,8"/>
+            </Grid>
+        </StackPanel>
+        <TextBlock x:Name="Outcome" DockPanel.Dock="Bottom" Text="Choose a scenario and run it to see each attempt." TextWrapping="Wrap" Margin="0,16,0,0"/>
+        <TextBox x:Name="Trace" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Padding="12"/>
+    </DockPanel>
+</Window>

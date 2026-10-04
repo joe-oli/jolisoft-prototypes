@@ -1,0 +1,5 @@
+.panel { margin-top: 48px; margin-bottom: 64px; padding-top: 28px; border-top: 1px solid #b7c2ba; scroll-margin-top: 24px; }
+.panel h2 { font-family: Georgia, serif; margin-bottom: 18px; }
+.panel p { max-width: 850px; }
+.command { padding: 18px; background: #f3eee0; border-left: 3px solid #c3a456; overflow-x: auto; }
+.reference { color: #586966; font-size: .85rem; }

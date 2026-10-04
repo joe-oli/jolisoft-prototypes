@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Builds the Jolisoft controller API for local use.
+Builds the Jolisoft solution, including the controller API, SQL project, and WPFTools.
 #>
 param(
     [ValidateSet('Debug', 'Release')]

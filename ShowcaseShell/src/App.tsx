@@ -1,5 +1,6 @@
 import './App.css'
 import WorkflowPanel from './WorkflowPanel'
+import WPFToolsPanel from './WPFToolsPanel'
 
 type ShowcaseItem = {
   number: string
@@ -9,6 +10,7 @@ type ShowcaseItem = {
   status: string
   tone: string
   href?: string
+  actionLabel?: string
 }
 
 const showcaseItems: ShowcaseItem[] = [
@@ -33,10 +35,12 @@ const showcaseItems: ShowcaseItem[] = [
   {
     number: '03',
     title: 'WPFTools',
-    summary: 'A focused desktop workbench for generated Dataverse models, metadata inspection, and resilient service access.',
+    summary: 'A Windows desktop workbench demonstrating SDK queries, organisation joins, paging, choice metadata, retries, and typed SDK LINQ with local fixtures.',
     stack: ['WPF', '.NET', 'Dataverse'],
-    status: 'Planned',
+    status: 'Local workbench verified',
     tone: 'gold',
+    href: '#wpf-tools',
+    actionLabel: 'View WPFTools run instructions',
   },
 ]
 
@@ -91,7 +95,7 @@ function App() {
               </div>
               <div className="system-card__footer">
                 <div className="tag-list">{item.stack.map((tag) => <span className="badge rounded-pill" key={tag}>{tag}</span>)}</div>
-                {item.href ? <a className="icon-button" href={item.href} aria-label={`Open ${item.title}`} title="Open system">↗</a> : <span className="icon-button" aria-label={`${item.title} planned`}>—</span>}
+                {item.href ? <a className="icon-button" href={item.href} aria-label={item.actionLabel ?? `Open ${item.title}`} title={item.actionLabel ?? 'Open system'}>↗</a> : <span className="icon-button" aria-label={`${item.title} planned`}>—</span>}
               </div>
             </article>
           ))}
@@ -99,6 +103,7 @@ function App() {
       </section>
 
       <WorkflowPanel />
+      <WPFToolsPanel />
 
       <section className="principles-band" id="principles">
         <div className="container principles-grid">

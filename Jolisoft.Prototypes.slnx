@@ -2,4 +2,9 @@
   <Project Path="Jolisoft.Demo.WebAPI/Jolisoft.Demo.WebAPI.csproj" />
   <Project Path="Jolisoft.Demo.EFLayer/Jolisoft.Demo.EFLayer.csproj" />
   <Project Path="Jolisoft.Demo.Database/Jolisoft.Demo.Database.sqlproj" />
+  <Folder Name="/WPFTools/">
+    <Project Path="WPFTools/Jolisoft.WPFTools.Core/Jolisoft.WPFTools.Core.csproj" />
+    <Project Path="WPFTools/Jolisoft.WPFTools/Jolisoft.WPFTools.csproj" />
+    <Project Path="WPFTools/Jolisoft.WPFTools.Checks/Jolisoft.WPFTools.Checks.csproj" />
+  </Folder>
 </Solution>
